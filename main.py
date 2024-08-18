@@ -64,10 +64,12 @@ async def upload_file(file: UploadFile):
             os.remove(input_file_path)  # Delete file after processing
 
         converted_file_full_path = os.path.abspath(output_file_path)  # Get full path to the converted file
+        print(f"File {file.filename} was converted.")
 
         # Send message to the message broker
         if is_send_to_broker:
             publish_message(queue_name, converted_file_full_path, broker_login, broker_password)
+            print(f"Message: \"{converted_file_full_path}\" was sent to broker.")
 
         return {"Status": "Ok"}
     except Exception as e:
