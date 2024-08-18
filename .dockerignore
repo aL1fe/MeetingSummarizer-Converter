@@ -1,0 +1,11 @@
+.git/
+.idea/
+.venv/
+__pycache__/
+incoming_files/
+converted_files/
+
+run.ps1
+startup.ps1
+.env
+BuildImage.bat
