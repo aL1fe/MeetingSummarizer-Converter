@@ -1,0 +1,10 @@
+.idea/
+.install/
+.venv/
+__pycache__/
+mp3/
+incoming_files/
+converted_files/
+
+.env
+ffmpeg.exe
