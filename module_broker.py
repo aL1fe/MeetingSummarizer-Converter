@@ -1,11 +1,17 @@
 import pika
+import os
+from dotenv import load_dotenv
 
 
 def publish_message(queue_name, message, login, password):
+    #  Load environment variables from .env file
+    broker_host = os.getenv('HOST')
     credentials = pika.PlainCredentials(login, password)
 
     # Establishing a connection to RabbitMQ
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(host=broker_host, port=5672, virtual_host='/', credentials=credentials)
+    )
     channel = connection.channel()
 
     # Create a queue if it doesn't exist
