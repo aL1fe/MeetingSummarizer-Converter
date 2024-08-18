@@ -1,6 +1,17 @@
 from fastapi import FastAPI, UploadFile
 import ffmpeg
 import os
+import json
+
+
+#  Get configurations settings
+with open('appconfig.json', 'r') as config_file:
+    config = json.load(config_file)
+upload_folder = config.get('upload_folder')
+output_folder = config.get('output_folder')
+delete_after_processing = config.get('delete_after_processing')
+conversion_format = config.get('conversion_format')
+
 
 app = FastAPI()
 
@@ -9,15 +20,14 @@ def convert_to_mp3(input_file, output_file):
     (
         ffmpeg
         .input(input_file)
-        .output(output_file, format='mp3')
+        .output(output_file, format=conversion_format)
         .overwrite_output()  # Overwrite file if exist
         .run()
     )
 
 
-async def save_file(file: UploadFile) -> str:
+async def save_file(file: UploadFile):
     # Create folder if it does not exist
-    upload_folder: str = "incoming_files"
     os.makedirs(upload_folder, exist_ok=True)
 
     # Form the full path for the file
@@ -37,8 +47,7 @@ async def upload_file(file: UploadFile):
         input_file_path = await save_file(file)
 
         # Create folder for converted files if it does not exist
-        converted_folder = "converted_files"
-        os.makedirs(converted_folder, exist_ok=True)
+        os.makedirs(output_folder, exist_ok=True)
 
         # Separate the file name and its extension
         filename, _ = os.path.splitext(file.filename)
@@ -46,7 +55,7 @@ async def upload_file(file: UploadFile):
         # Create filename for converted file
         converted_filename = f"{filename}.mp3"
 
-        converted_file_path = os.path.join(converted_folder, converted_filename)
+        converted_file_path = os.path.join(output_folder, converted_filename)
 
         convert_to_mp3(input_file_path, converted_file_path)
 
@@ -59,5 +68,3 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(app, host="0.0.0.0", port=8003)
-
-# TODO Add config json for incoming and converted folder name and flag if incoming file need to delete

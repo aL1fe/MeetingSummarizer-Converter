@@ -1,0 +1,6 @@
+{
+  "upload_folder": "incoming_files",
+  "output_folder": "converted_files",
+  "delete_after_processing": true,
+  "conversion_format": "mp3"
+}
