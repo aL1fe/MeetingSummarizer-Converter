@@ -59,10 +59,14 @@ async def upload_file(file: UploadFile):
 
         convert_to_mp3(input_file_path, converted_file_path)
 
-        return {"Ok"}
         if delete_after_processing:
             # Delete file after processing
             os.remove(input_file_path)
+
+        #  Get full path to the converted file
+        converted_file_full_path = os.path.abspath(converted_file_path)
+
+        return {converted_file_full_path}
     except Exception as e:
         return {"Error": str(e)}
 
