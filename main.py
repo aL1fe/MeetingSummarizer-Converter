@@ -16,7 +16,8 @@ with open('appconfig.json', 'r') as config_file:
     config = json.load(config_file)
 upload_folder = config.get('upload_folder')
 output_folder = config.get('output_folder')
-delete_after_processing = config.get('delete_after_processing')
+is_delete_after_processing = config.get('is_delete_after_processing')
+is_send_to_broker = config.get('is_send_to_broker')
 conversion_format = config.get('conversion_format')
 queue_name = config.get('broker_queue_name')
 
@@ -58,13 +59,14 @@ async def upload_file(file: UploadFile):
 
         convert_to_mp3(input_file_path, output_file_path)
 
-        if delete_after_processing:
+        if is_delete_after_processing:
             os.remove(input_file_path)  # Delete file after processing
 
         converted_file_full_path = os.path.abspath(output_file_path)  # Get full path to the converted file
 
         # Send message to the message broker
-        publish_message(queue_name, converted_file_full_path, broker_login, broker_password)
+        if is_send_to_broker:
+            publish_message(queue_name, converted_file_full_path, broker_login, broker_password)
 
         return {"Status": "Ok"}
     except Exception as e:
