@@ -34,11 +34,9 @@ def convert_to_mp3(input_file, output_file):
 
 
 async def save_file(file: UploadFile):
-    # Create folder if it does not exist
-    os.makedirs(upload_folder, exist_ok=True)
+    os.makedirs(upload_folder, exist_ok=True)  # Create folder if it does not exist
 
-    # Form the full path for the file
-    file_path = os.path.join(upload_folder, file.filename)
+    file_path = os.path.join(upload_folder, file.filename)  # Form the full path for the file
 
     # Save file
     with open(file_path, "wb") as f:
@@ -50,28 +48,20 @@ async def save_file(file: UploadFile):
 @app.post("/convert/")
 async def upload_file(file: UploadFile):
     try:
-        # Save received file to the incoming files folder
-        input_file_path = await save_file(file)
+        input_file_path = await save_file(file)  # Save received file to the incoming files folder
 
-        # Create folder for converted files if it does not exist
-        os.makedirs(output_folder, exist_ok=True)
+        os.makedirs(output_folder, exist_ok=True)  # Create folder for converted files if it does not exist
 
-        # Separate the file name and its extension
-        filename, _ = os.path.splitext(file.filename)
+        filename, _ = os.path.splitext(file.filename)  # Separate the file name and its extension
 
-        # Create filename for converted file
-        converted_filename = f"{filename}.mp3"
+        output_file_path = os.path.join(output_folder, f"{filename}.mp3")
 
-        converted_file_path = os.path.join(output_folder, converted_filename)
-
-        convert_to_mp3(input_file_path, converted_file_path)
+        convert_to_mp3(input_file_path, output_file_path)
 
         if delete_after_processing:
-            # Delete file after processing
-            os.remove(input_file_path)
+            os.remove(input_file_path)  # Delete file after processing
 
-        # Get full path to the converted file
-        converted_file_full_path = os.path.abspath(converted_file_path)
+        converted_file_full_path = os.path.abspath(output_file_path)  # Get full path to the converted file
 
         # Send message to the message broker
         publish_message(queue_name, converted_file_full_path, broker_login, broker_password)
@@ -83,5 +73,4 @@ async def upload_file(file: UploadFile):
 
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="0.0.0.0", port=port)
