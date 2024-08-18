@@ -7,6 +7,7 @@ import json
 #  Get configurations settings
 with open('appconfig.json', 'r') as config_file:
     config = json.load(config_file)
+port = config.get('port')
 upload_folder = config.get('upload_folder')
 output_folder = config.get('output_folder')
 delete_after_processing = config.get('delete_after_processing')
@@ -74,4 +75,4 @@ async def upload_file(file: UploadFile):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8003)
+    uvicorn.run(app, host="0.0.0.0", port=port)
