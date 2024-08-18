@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 from module_broker import publish_message
 
 #  Load environment variables from .env file
-load_dotenv()
+env_path = os.path.join(os.path.dirname(__file__), '..', '.env')
+load_dotenv(dotenv_path=env_path)
 port = int(os.getenv('PORT', 8003))    # 8003 is the default value if PORT is not set
 broker_login = os.getenv('LOGIN')
 broker_password = os.getenv('PASSWORD')
