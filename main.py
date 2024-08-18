@@ -2,17 +2,19 @@ from fastapi import FastAPI, UploadFile
 import ffmpeg
 import os
 import json
+from dotenv import load_dotenv
 
+#  Load environment variables from .env file
+load_dotenv()
+port = int(os.getenv('PORT', 8003))    # 8003 is the default value if PORT is not set
 
-#  Get configurations settings
+#  Load configurations settings from appconfig file
 with open('appconfig.json', 'r') as config_file:
     config = json.load(config_file)
-port = config.get('port')
 upload_folder = config.get('upload_folder')
 output_folder = config.get('output_folder')
 delete_after_processing = config.get('delete_after_processing')
 conversion_format = config.get('conversion_format')
-
 
 app = FastAPI()
 
