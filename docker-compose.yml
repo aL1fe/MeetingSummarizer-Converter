@@ -1,0 +1,13 @@
+version: '3.8'
+name: meeting_summarizer
+services:      
+  converter:
+    container_name: converter
+    image: al1fe/converter
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - $CONVERTER_EXTERNAL_PORT:$CONVERTER_INNER_PORT
+    volumes:
+      - ./Data/Converter/incoming_files:/app/incoming_files
+      - ./Data/Converter/converted_files:/app/converted_files
