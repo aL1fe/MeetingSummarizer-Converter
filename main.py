@@ -8,9 +8,8 @@ from module_broker import publish_message
 #  Load environment variables from .env file
 env_path = os.path.join(os.path.dirname(__file__), '..', '.env')
 load_dotenv(dotenv_path=env_path)
-port = int(os.getenv('PORT', 8003))    # 8003 is the default value if PORT is not set
-broker_login = os.getenv('LOGIN')
-broker_password = os.getenv('PASSWORD')
+port = int(os.getenv('CONVERTER_INNER_PORT', 8003))    # 8003 is the default value if PORT is not set
+
 
 #  Load configurations settings from appconfig file
 with open('appconfig.json', 'r') as config_file:
@@ -68,7 +67,7 @@ async def upload_file(file: UploadFile):
 
         # Send message to the message broker
         if is_send_to_broker:
-            publish_message(queue_name, converted_file_full_path, broker_login, broker_password)
+            publish_message(queue_name, converted_file_full_path)
             print(f"Message: \"{converted_file_full_path}\" was sent to broker.")
 
         return {"Status": "Ok"}

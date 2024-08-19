@@ -3,10 +3,12 @@ import os
 from dotenv import load_dotenv
 
 
-def publish_message(queue_name, message, login, password):
+def publish_message(queue_name, message):
     #  Load environment variables from .env file
-    broker_host = os.getenv('HOST')
-    credentials = pika.PlainCredentials(login, password)
+    broker_host = os.getenv('MESSAGE_BROKER_HOST')
+    broker_login = os.getenv('MESSAGE_BROKER_LOGIN')
+    broker_password = os.getenv('MESSAGE_BROKER_PASSWORD')
+    credentials = pika.PlainCredentials(broker_login, broker_password)
 
     # Establishing a connection to RabbitMQ
     connection = pika.BlockingConnection(
