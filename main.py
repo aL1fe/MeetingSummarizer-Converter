@@ -1,25 +1,25 @@
 from fastapi import FastAPI, UploadFile
 import ffmpeg
 import os
-import json
 from dotenv import load_dotenv
 from module_broker import publish_message
 
-#  Load environment variables from .env file
+
+# Load environment variables from .env file
 env_path = os.path.join(os.path.dirname(__file__), '..', '.env')
 load_dotenv(dotenv_path=env_path)
 port = int(os.getenv('CONVERTER_INNER_PORT', 8003))    # 8003 is the default value if PORT is not set
+upload_folder = os.getenv('CONVERTER_UPLOAD_FOLDER')
+output_folder = os.getenv('CONVERTER_OUTPUT_FOLDER')
+is_delete_after_processing = (os.getenv('CONVERTER_IS_DELETE_AFTER_PROCESSING', 'False')
+                              .lower() in ('true', '1', 'yes'))
+is_send_to_broker = (os.getenv('CONVERTER_IS_SEND_TO_BROKER', 'False')
+                     .lower() in ('true', '1', 'yes'))
+conversion_format = os.getenv('CONVERTER_FORMAT')
+queue_name = os.getenv('BROKER_QUEUE_NAME')
 
-
-#  Load configurations settings from appconfig file
-with open('appconfig.json', 'r') as config_file:
-    config = json.load(config_file)
-upload_folder = config.get('upload_folder')
-output_folder = config.get('output_folder')
-is_delete_after_processing = config.get('is_delete_after_processing')
-is_send_to_broker = config.get('is_send_to_broker')
-conversion_format = config.get('conversion_format')
-queue_name = config.get('broker_queue_name')
+print(is_delete_after_processing)
+print(is_send_to_broker)
 
 app = FastAPI()
 

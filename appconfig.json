@@ -1,8 +1,0 @@
-{
-  "upload_folder": "incoming_files",
-  "output_folder": "converted_files",
-  "is_delete_after_processing": true,
-  "is_send_to_broker": true,
-  "conversion_format": "mp3",
-  "broker_queue_name": "meet_sum_queue"
-}
