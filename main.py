@@ -3,6 +3,7 @@ import ffmpeg
 import os
 from dotenv import load_dotenv
 from module_broker import publish_message
+from module_file import save_file
 
 
 # Load environment variables from .env file
@@ -34,22 +35,10 @@ def convert_to_mp3(input_file, output_file):
     )
 
 
-async def save_file(file: UploadFile):
-    os.makedirs(upload_folder, exist_ok=True)  # Create folder if it does not exist
-
-    file_path = os.path.join(upload_folder, file.filename)  # Form the full path for the file
-
-    # Save file
-    with open(file_path, "wb") as f:
-        f.write(await file.read())
-
-    return file_path
-
-
 @app.post("/convert/")
 async def upload_file(file: UploadFile):
     try:
-        input_file_path = await save_file(file)  # Save received file to the incoming files folder
+        input_file_path = await save_file(file, upload_folder)  # Save received file to the incoming files folder
 
         os.makedirs(output_folder, exist_ok=True)  # Create folder for converted files if it does not exist
 
