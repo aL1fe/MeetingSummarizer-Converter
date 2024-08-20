@@ -44,15 +44,14 @@ async def upload_file(file: UploadFile):
         output_file_path = os.path.join(output_folder, f"{filename}.mp3")
 
         convert_to_mp3(input_file_path, output_file_path)
-
-        if is_delete_after_processing:
-            os.remove(input_file_path)  # Delete file after processing
-
-        converted_file_full_path = os.path.abspath(output_file_path)  # Get full path to the converted file
         print(f"File {file.filename} was converted.")
+        
+        if is_delete_after_processing:
+            os.remove(input_file_path)  # Delete file after processing    
 
         # Send message to the message broker
         if is_send_to_broker:
+            converted_file_full_path = os.path.abspath(output_file_path)  # Get full path to the converted file
             publish_message(queue_name, converted_file_full_path)
             print(f"Message: \"{converted_file_full_path}\" was sent to broker.")
 

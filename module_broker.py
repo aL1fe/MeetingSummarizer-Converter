@@ -41,7 +41,7 @@ def publish_message(queue_name, message):
 
 
 def receive_message(queue_name):
-    hannel, connection = connect_to_broker(queue_name)
+    channel, connection = connect_to_broker(queue_name)
 
     # Set up a callback function to handle messages
     channel.basic_consume(
