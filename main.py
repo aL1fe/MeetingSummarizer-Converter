@@ -26,7 +26,7 @@ def convert_to_mp3(input_file, output_file):
     (
         ffmpeg
         .input(input_file)
-        .output(output_file, format=conversion_format)
+        .output(output_file, format=conversion_format, audio_bitrate='320k')
         .overwrite_output()  # Overwrite file if exist
         .run()
     )
