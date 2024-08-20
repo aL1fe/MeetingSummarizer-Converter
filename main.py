@@ -6,9 +6,7 @@ from module_broker import publish_message
 from module_file import save_file
 
 
-# Load environment variables from .env file
-env_path = os.path.join(os.path.dirname(__file__), '..', '.env')
-load_dotenv(dotenv_path=env_path)
+load_dotenv()
 port = int(os.getenv('CONVERTER_PORT', 8003))    # 8003 is the default value if PORT is not set
 is_delete_after_processing = (os.getenv('CONVERTER_IS_DELETE_AFTER_PROCESSING', 'False')
                               .lower() in ('true', '1', 'yes'))
