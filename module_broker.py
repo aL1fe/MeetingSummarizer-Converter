@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 def connect_to_broker(queue_name):
     #  Load environment variables from .env file
-    broker_host = env('MESSAGE_BROKER_HOST', '127.0.0.1')
+    broker_host = os.getenv('MESSAGE_BROKER_HOST', '127.0.0.1')
     broker_login = os.getenv('MESSAGE_BROKER_LOGIN')
     broker_password = os.getenv('MESSAGE_BROKER_PASSWORD')
     credentials = pika.PlainCredentials(broker_login, broker_password)
