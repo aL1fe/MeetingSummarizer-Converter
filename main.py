@@ -9,18 +9,15 @@ from module_file import save_file
 # Load environment variables from .env file
 env_path = os.path.join(os.path.dirname(__file__), '..', '.env')
 load_dotenv(dotenv_path=env_path)
-port = int(os.getenv('CONVERTER_INNER_PORT', 8003))    # 8003 is the default value if PORT is not set
-upload_folder = os.getenv('CONVERTER_UPLOAD_FOLDER')
-output_folder = os.getenv('CONVERTER_OUTPUT_FOLDER')
+port = int(os.getenv('CONVERTER_PORT', 8003))    # 8003 is the default value if PORT is not set
 is_delete_after_processing = (os.getenv('CONVERTER_IS_DELETE_AFTER_PROCESSING', 'False')
                               .lower() in ('true', '1', 'yes'))
 is_send_to_broker = (os.getenv('CONVERTER_IS_SEND_TO_BROKER', 'False')
                      .lower() in ('true', '1', 'yes'))
 conversion_format = os.getenv('CONVERTER_FORMAT')
-queue_name = os.getenv('BROKER_QUEUE_NAME')
-
-print(is_delete_after_processing)
-print(is_send_to_broker)
+queue_name = os.getenv('CONVERTER_QUEUE_NAME')
+upload_folder = "incoming_files"
+output_folder = "converted_files"
 
 app = FastAPI()
 
