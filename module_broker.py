@@ -5,15 +5,17 @@ from dotenv import load_dotenv
 
 def connect_to_broker(queue_name):
     #  Load environment variables from .env file
-    broker_host = os.getenv('MESSAGE_BROKER_HOST')
-    # broker_host = 'localhost'
+    broker_host = env('MESSAGE_BROKER_HOST', '127.0.0.1')
     broker_login = os.getenv('MESSAGE_BROKER_LOGIN')
     broker_password = os.getenv('MESSAGE_BROKER_PASSWORD')
     credentials = pika.PlainCredentials(broker_login, broker_password)
 
     # Establishing a connection to RabbitMQ
     connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host=broker_host, port=5672, virtual_host='/', credentials=credentials)
+        pika.ConnectionParameters(host=broker_host,
+                                  port=5672,
+                                  virtual_host='/',
+                                  credentials=credentials)
     )
 
     channel = connection.channel()
