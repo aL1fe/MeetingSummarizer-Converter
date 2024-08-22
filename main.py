@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile
 import ffmpeg
 import os
 from dotenv import load_dotenv
-from module_broker import publish_message
+from module_broker import BrokerClient
 from module_file import save_file
 
 
@@ -49,8 +49,9 @@ async def upload_file(file: UploadFile):
 
         # Send message to the message broker
         if is_send_to_broker:
+            broker_client = BrokerClient(queue_name)
             converted_file_full_path = os.path.abspath(output_file_path)  # Get full path to the converted file
-            publish_message(queue_name, converted_file_full_path)
+            broker_client.publish_message(converted_file_full_path)
             print(f"Message: \"{converted_file_full_path}\" was sent to broker.")
 
         return {"Status": "Ok"}
