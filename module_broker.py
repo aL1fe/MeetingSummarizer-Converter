@@ -43,16 +43,16 @@ class BrokerClient:
 
         connection.close()
 
-    def receive_message(self):
-        channel, connection = self.__connect_to_broker()
-
-        # Set up a callback function to handle messages
-        channel.basic_consume(
-            queue=self.__queue_name,
-            on_message_callback=self.__callback,
-            auto_ack=True  # Automatic confirmation of receipt of messages
-        )
-        channel.start_consuming()
-
-    def __callback(self, ch, method, properties, body):
-        print(f"Received: {body.decode()}")
+    # def receive_message(self):
+    #     channel, connection = self.__connect_to_broker()
+    #
+    #     # Set up a callback function to handle messages
+    #     channel.basic_consume(
+    #         queue=self.__queue_name,
+    #         on_message_callback=self.__callback,
+    #         auto_ack=True  # Automatic confirmation of receipt of messages
+    #     )
+    #     channel.start_consuming()
+    #
+    # def __callback(self, ch, method, properties, body):
+    #     print(f"Received: {body.decode()}")
