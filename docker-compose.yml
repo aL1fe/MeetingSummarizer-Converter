@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     env_file: .env
     ports:
-      - $CONVERTER_EXTERNAL_PORT:$CONVERTER_INNER_PORT
+      - 8003:$CONVERTER_PORT
     volumes:
       - ./Data/Converter/incoming_files:/app/incoming_files
       - ./Data/Converter/converted_files:/app/converted_files
